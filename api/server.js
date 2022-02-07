@@ -50,4 +50,29 @@ server.post('/api/users', (req, res) => {
     }
 });
 
+// PUT update specified user with id using data from request body
+server.put('/api/users/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const user = await userModel.findById(id);
+        if(user === null) {
+            res.status(404).json({message: `user ${id} not found!`});
+            return;
+        }
+        let body = req.body;
+        if(!body.name) {
+            res.status(500).json({message: `name is required`});
+            return;
+        } else if (!body.bio) {
+            res.status(500).json({message: 'bio is required'});
+            return;
+        } else {
+            const newUser = await userModel.update(id, body);
+            res.status(200).json(newUser);
+        }
+    } catch (e) {
+        res.status(500).json({message: `could not update user!`});
+    }
+})
+
 module.exports = server; // EXPORT YOUR SERVER instead of {}
