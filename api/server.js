@@ -60,7 +60,7 @@ server.put('/api/users/:id', async (req, res) => {
         }
         let body = req.body;
         if(!body.name || !body.bio) {
-            res.status(500).json({message: `Please provide name and bio for the user`});
+            res.status(400).json({message: `Please provide name and bio for the user`});
             return;
         } else {
             const newUser = await userModel.update(id, body);
