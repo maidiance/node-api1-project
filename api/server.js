@@ -51,6 +51,7 @@ server.post('/api/users', (req, res) => {
 });
 
 // PUT update specified user with id using data from request body
+// Return updated user
 server.put('/api/users/:id', async (req, res) => {
     const { id } = req.params;
     try {
@@ -73,6 +74,22 @@ server.put('/api/users/:id', async (req, res) => {
     } catch (e) {
         res.status(500).json({message: `could not update user!`});
     }
-})
+});
+
+// DELETE specific user with id and return deleted user
+server.delete('/api/users/:id', (req, res) => {
+    const { id } = req.params;
+    userModel.remove(id)
+        .then(user => {
+            if(user === null) {
+                res.status(404).json({message: `user ${id} not found!`});
+                return;
+            }
+            res.status(200).json(user);
+        })
+        .catch(() => {
+            res.status(500).json({message: `could not delete user!`});
+        })
+});
 
 module.exports = server; // EXPORT YOUR SERVER instead of {}
