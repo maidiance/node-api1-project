@@ -1,3 +1,19 @@
 // BUILD YOUR SERVER HERE
+const express = require('express');
+const userModel = require('./users/model');
+const server = express();
 
-module.exports = {}; // EXPORT YOUR SERVER instead of {}
+server.use(express.json());
+
+// GET all users
+server.get('/api/users', (req, res) => {
+    userModel.find()
+        .then(users => {
+            res.json(users);
+        })
+        .catch(() => {
+            res.status(500).json({message: 'could not get users!'});
+        })
+});
+
+module.exports = server; // EXPORT YOUR SERVER instead of {}
