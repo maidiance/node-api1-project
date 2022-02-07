@@ -16,6 +16,22 @@ server.get('/api/users', (req, res) => {
         })
 });
 
+// GET specific user by id
+server.get('/api/users/:id', (req, res) => {
+    let { id } = req.params;
+    userModel.findById(id)
+        .then(user => {
+            if(user === null) {
+                res.status(404).json({message: `user ${id} not found!`});
+            } else {
+                res.json(user);
+            }
+        })
+        .catch(() => {
+            res.status(500).json({message: `could not get user!`});
+        })
+});
+
 // POST a new user
 server.post('/api/users', (req, res) => {
     let user = req.body;
