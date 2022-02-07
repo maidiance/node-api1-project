@@ -36,7 +36,7 @@ server.get('/api/users/:id', (req, res) => {
 server.post('/api/users', (req, res) => {
     let user = req.body;
     if(!user.name || !user.bio ){
-        res.status(500).json({message: 'Please provide name and bio for the user'});
+        res.status(400).json({message: 'Please provide name and bio for the user'});
     } else {
         userModel.insert(user)
             .then(user => {
